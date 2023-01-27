@@ -13,8 +13,6 @@ class AverageTranslationTime:
         
         end_time = datetime.strptime(translations[-1]["timestamp"], '%Y-%m-%d %H:%M:%S.%f').replace(second=0, microsecond=0)
 
-        # import pdb
-        # pdb.set_trace()
         time_range = DateTimeRange(start_time, end_time + timedelta(minutes=1))
 
         results = []
@@ -45,8 +43,6 @@ class AverageTranslationTime:
 
     def calculate_avg_delivery_time(delivery_times: list) -> float:
         return sum(delivery_times)/len(delivery_times)
-
-    
 
 if __name__ == "__main__":
     AverageTranslationTime.calculate_avg_translation_time(input_file_name="input.json")
