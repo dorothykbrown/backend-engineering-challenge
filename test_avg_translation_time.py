@@ -1,3 +1,4 @@
+import json
 import unittest
 from datetime import datetime
 from avg_translation_time import AverageTranslationTime
@@ -75,10 +76,36 @@ class TestAverageTranslationTime(unittest.TestCase):
         )
 
     def test_convert_string_to_datetime(self):
-        pass
+        datetime_str = "2018-12-26 18:15:19.903159"
+        datetime_object = AverageTranslationTime.convert_string_to_datetime(datetime_str)
+        expected_datetime_object = datetime(year=2018, month=12, day=26, hour=18, minute=15, second=19, microsecond=903159)
+        
+        self.assertEqual(
+            datetime_object,
+            expected_datetime_object,
+            "datetime object is not as expected"
+        )
     
     def test_calculate_avg_translation_time(self):
-        pass
+        AverageTranslationTime.calculate_avg_translation_time(
+            input_file_name="input.json", 
+            window_size=10
+        )
+
+        output_file = open("output_test.json")
+        avg_translation_times = json.load(output_file)
+
+        expected_output_file = open("expected_output_test.json")
+        expected_avg_translation_times = json.load(expected_output_file)
+        
+        self.assertEqual(
+            avg_translation_times,
+            expected_avg_translation_times,
+            "avg_translation_times are not as expected"
+        )
+
+        output_file.close()
+        expected_output_file.close()
 
 if __name__ == '__main__':
     unittest.main()

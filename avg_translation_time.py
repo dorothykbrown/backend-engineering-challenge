@@ -39,9 +39,10 @@ class AverageTranslationTime:
                 }
             )
 
-        output_file = open("output_file_test.json", "w")
+        output_file = open("output_test.json", "w")
         json.dump(results, output_file)
         
+        file.close()
         output_file.close()
 
     def calculate_avg_delivery_time(delivery_times: list) -> Optional[float]:
