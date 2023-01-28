@@ -1,7 +1,9 @@
 import json
+import sys
 from typing import Optional
 from datetimerange import DateTimeRange
 from datetime import timedelta, datetime
+import argparse
 
 class AverageTranslationTime:
 
@@ -67,4 +69,21 @@ class AverageTranslationTime:
         return datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S.%f')
 
 if __name__ == "__main__":
-    AverageTranslationTime.calculate_avg_translation_time(input_file_name="input.json")
+    parser = argparse.ArgumentParser(
+        prog="AverageTranslationTime",
+        description="Calculates the average translation time within the specified window of time",
+        epilog="And that's how you'd calculate the average translation time with a sliding window!"
+    )
+
+    # unbabel_cli --input_file events.json --window_size 10
+    parser.add_argument("--input_file", dest="input_file", nargs=1, required=True, help="The input file with translation stream in JSON format")
+    parser.add_argument("--window_size", dest="window_size", nargs=1, type=int, required=True, help="The size of the time window in minutes")
+    
+    args = parser.parse_args(sys.argv[1:])
+    [input_file_name] = args.input_file
+    [window_size] = args.window_size
+
+    AverageTranslationTime.calculate_avg_translation_time(
+        input_file_name=input_file_name,
+        window_size=window_size
+    )
