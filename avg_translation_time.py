@@ -1,10 +1,11 @@
 import json
+from typing import Optional
 from datetimerange import DateTimeRange
 from datetime import timedelta, datetime
 
 class AverageTranslationTime:
 
-    def calculate_avg_translation_time(input_file_name: str):
+    def calculate_avg_translation_time(input_file_name: str, window_size: int):
         file = open(input_file_name)
         translations = json.load(file)
 
@@ -19,7 +20,7 @@ class AverageTranslationTime:
         results = []
 
         for minute in time_range.range(timedelta(seconds=60)):
-            ten_min_window_time_range = DateTimeRange(minute - timedelta(minutes=10), minute)
+            ten_min_window_time_range = DateTimeRange(minute - timedelta(minutes=window_size), minute)
             delivery_times_in_range = [
                 translation["duration"]
                 for translation in translations 
@@ -43,7 +44,11 @@ class AverageTranslationTime:
         
         output_file.close()
 
-    def calculate_avg_delivery_time(delivery_times: list) -> float:
+    def calculate_avg_delivery_time(delivery_times: list) -> Optional[float]:
+        
+        if len(delivery_times) < 1:
+            return None
+
         return sum(delivery_times)/len(delivery_times)
 
     def format_translation_results(translations: list) -> list:
